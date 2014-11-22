@@ -42,7 +42,9 @@ CHAT = {
 // RaphaelJS
 
 var DRAW = {
-  tmp : {},
+  tmp : {
+    nodes : []
+  },
 
   init : function(){
     DRAW.tmp.canvasWidth = $("#canvas").width();
@@ -57,6 +59,7 @@ var DRAW = {
       this.animate({height: "0", width : "0", x : DRAW.tmp.canvasWidth / 2, y : DRAW.tmp.canvasHeight / 2}, 100, '>', function(){
         this.remove();
         DRAW.createBox(e.clientX, e.clientY, "");
+        DRAW.tmp.lastClickPos = {x : e.clientX, y : e.clientY};
       });
     });
 
@@ -65,9 +68,11 @@ var DRAW = {
           if(DRAW.tmp.initTips !== null & DRAW.tmp.initTips.node !== null){
             DRAW.tmp.initTips.animate({height: "0", width : "0", x : DRAW.tmp.canvasWidth / 2, y : DRAW.tmp.canvasHeight / 2}, 100, '>', function(){
               this.remove();
+              DRAW.tmp.lastClickPos = {x : e.clientX, y : e.clientY};
               DRAW.createBox(e.clientX, e.clientY, "");
             });
           } else{
+            DRAW.tmp.lastClickPos = {x : e.clientX, y : e.clientY};
             DRAW.createBox(e.clientX, e.clientY, "");
           }
         }
@@ -75,8 +80,16 @@ var DRAW = {
   },
 
   launch_triggers : function(){
-    $("#create-box-check").click("");
-    $("#create-box-delete").click("");
+    $("#create-box-check").click(function(){
+      DRAW.bubble(DRAW.tmp.lastClickPos.x, DRAW.tmp.lastClickPos.y - $("header").height() - $("#chat-box").height() - 5, $("#create-box-content-input").val());
+      $("#create-box").css("display", "none");
+      $("#create-box-content-input").val('');
+    });
+
+    $("#create-box-delete").click(function(){
+      $("#create-box").css("display", "none");
+      $("#create-box-content-input").val('');
+    });
   },
 
   createBox : function(x, y, content){
@@ -97,9 +110,9 @@ var DRAW = {
                   yrad : box.width + 5,
                   xrad : box.height + 5};
 
-      var ellipse = paper.ellipse(metrics.xcenter, metrics.ycenter, metrics.yrad, metrics.xrad);
+    var ellipse = DRAW.tmp.paper.ellipse(metrics.xcenter, metrics.ycenter, metrics.yrad, metrics.xrad);
 
-      return {text : text, ellipse : ellipse};
+    DRAW.tmp.nodes.push({text : text, ellipse : ellipse});
   }
 }
 
@@ -107,3 +120,4 @@ var DRAW = {
 
 CHAT.launch_triggers();
 DRAW.init();
+DRAW.launch_triggers();
