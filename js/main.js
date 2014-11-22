@@ -1,16 +1,20 @@
 // Tools
 
 TOOLS = {
+
   getDate : function(){
     var d = new Date();
     return d.getHours() + ":" + d.getMinutes() + " " + d.getMonth() + "/" + d.getDate() + "/" + d.getFullYear();
   }
+
 }
 
 // Chat
 
 CHAT = {
+
   msg_pattern : '<div class="message"><div class="message-header"><div class="message-name">#{{name}}</div><div class="message-date">{{date}}</div></div><div class="message-body">{{content}}</div></div>',
+
   launch_triggers : function(){
     $("#send-button").click(function(){
       var name = $("#name-input").val(),
@@ -26,49 +30,80 @@ CHAT = {
       }
     });
   },
+
   addMsg : function(name, date, content){
-      $("#chat").append(CHAT.msg_pattern.replace("{{name}}", name).replace("{{date}}", date).replace("{{content}}", content));
+      $("#chat").append(CHAT.msg_pattern
+          .replace("{{name}}", name)
+          .replace("{{date}}", date)
+          .replace("{{content}}", content));
   }
 }
 
-CHAT.launch_triggers();
-
 // RaphaelJS
 
-var canvasWidth = $("#canvas").width(),
-    canvasHeight = $(window).height() - $("header").height() - $("#chat-box").height() - 5;
-var paper = Raphael("canvas", canvasWidth, canvasHeight);
-var initTips = paper.image("img/add.svg", canvasWidth / 2 - 40, canvasHeight / 2 - 40, 80, 80).mouseover(function(){
-  this.animate( {transform: "r45"}, 1000, 'bounce');
-}).mouseout(function(){
-  this.animate({transform: "r-45"}, 1000, 'bounce');
-}).click(function(e){
-  this.animate({height: "0", width : "0", x : canvasWidth / 2, y : canvasHeight / 2}, 100, '>', function(){
-    this.remove();
-    modifyBox(e.clientX, e.clientY, "");
-  });
-});
+var DRAW = {
+  tmp : {},
 
-function modifyBox(x, y, content){
-  $("#create-box").css("display", "block");
-  $("#create-box").css("left", x);
-  $("#create-box").css("top", y);
-  $("#create-box-content-input").focus();
+  init : function(){
+    DRAW.tmp.canvasWidth = $("#canvas").width();
+    DRAW.tmp.canvasHeight = $(window).height() - $("header").height() - $("#chat-box").height() - 5;
+    DRAW.tmp.paper = Raphael("canvas", DRAW.tmp.canvasWidth, DRAW.tmp.canvasHeight);
+
+    DRAW.tmp.initTips = DRAW.tmp.paper.image("img/add.svg", DRAW.tmp.canvasWidth / 2 - 40, DRAW.tmp.canvasHeight / 2 - 40, 80, 80).mouseover(function(){
+      this.animate( {transform: "r45"}, 1000, 'bounce');
+    }).mouseout(function(){
+      this.animate({transform: "r-45"}, 1000, 'bounce');
+    }).click(function(e){
+      this.animate({height: "0", width : "0", x : DRAW.tmp.canvasWidth / 2, y : DRAW.tmp.canvasHeight / 2}, 100, '>', function(){
+        this.remove();
+        DRAW.createBox(e.clientX, e.clientY, "");
+      });
+    });
+
+    $("#canvas").click(function(e){
+      if (e.target.nodeName == "svg"){
+          if(DRAW.tmp.initTips !== null & DRAW.tmp.initTips.node !== null){
+            DRAW.tmp.initTips.animate({height: "0", width : "0", x : DRAW.tmp.canvasWidth / 2, y : DRAW.tmp.canvasHeight / 2}, 100, '>', function(){
+              this.remove();
+              DRAW.createBox(e.clientX, e.clientY, "");
+            });
+          } else{
+            DRAW.createBox(e.clientX, e.clientY, "");
+          }
+        }
+    });
+  },
+
+  launch_triggers : function(){
+    $("#create-box-check").click("");
+    $("#create-box-delete").click("");
+  },
+
+  createBox : function(x, y, content){
+    $("#create-box").css("display", "block")
+                    .css("left", x - 312 / 2)
+                    .css("top", y - 64 / 2);
+    $("#create-box-content-input").focus();
+  },
+
+  bubble : function(x, y, content){
+    // Text
+    var text = DRAW.tmp.paper.text(x, y, content),
+        box = text.getBBox();
+
+    // Bubble
+    var metrics = {xcenter : box.x / 2 + box.x2 / 2,
+                  ycenter : box.y / 2 + box.y2 / 2,
+                  yrad : box.width + 5,
+                  xrad : box.height + 5};
+
+      var ellipse = paper.ellipse(metrics.xcenter, metrics.ycenter, metrics.yrad, metrics.xrad);
+
+      return {text : text, ellipse : ellipse};
+  }
 }
 
-function bubble(x, y, content){
+// main
 
-  // Text
-  var text = paper.text(x, y, content),
-      box = text.getBBox();
-
-  // Bubble
-  var metrics = {xcenter : box.x / 2 + box.x2 / 2,
-                 ycenter : box.y / 2 + box.y2 / 2,
-                 yrad : box.width + 5,
-                 xrad : box.height + 5};
-
-  var ellipse = paper.ellipse(metrics.xcenter, metrics.ycenter, metrics.yrad, metrics.xrad);
-
-  return {text : text, ellipse : ellipse};
-}
+CHAT.launch_triggers();
+DRAW.init();

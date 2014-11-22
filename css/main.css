@@ -103,5 +103,13 @@ header > div{
 #create-box-options img{
   height : 20px;
   width : 20px;
-  margin-left : 280px;
+  margin-left : 5px;
+}
+
+#create-box-options img:first-child{
+  margin-left : 235px;
+}
+
+#create-box-options img:hover{
+  cursor : pointer;
 }
