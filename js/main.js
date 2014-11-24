@@ -41,6 +41,22 @@ CHAT = {
 
 // RaphaelJS
 
+Raphael.st.draggable = function() {
+  var me = this, lx = 0, ly = 0,ox = 0, oy = 0,
+  moveFnc = function(dx, dy) {
+    lx = dx + ox;
+    ly = dy + oy;
+    me.transform('t' + lx + ',' + ly);
+  },
+  startFnc = function() {},
+  endFnc = function() {
+    ox = lx;
+    oy = ly;
+  };
+
+  this.drag(moveFnc, startFnc, endFnc);
+};
+
 var DRAW = {
   tmp : {
     nodes : []
@@ -101,7 +117,7 @@ var DRAW = {
 
   bubble : function(x, y, content){
     // Text
-    var text = DRAW.tmp.paper.text(x, y, content),
+    var text = DRAW.tmp.paper.text(x, y, content).attr({"font-size" : 13, "fill" : "#333333"}),
         box = text.getBBox();
 
     // Bubble
@@ -110,9 +126,13 @@ var DRAW = {
                   yrad : box.width + 5,
                   xrad : box.height + 5};
 
-    var ellipse = DRAW.tmp.paper.ellipse(metrics.xcenter, metrics.ycenter, metrics.yrad, metrics.xrad);
+    var ellipse = DRAW.tmp.paper.ellipse(metrics.xcenter, metrics.ycenter, metrics.yrad, metrics.xrad).attr({"stroke" : "#e3e3e3", "fill" : "#f2f2f2"}).toBack();
 
-    DRAW.tmp.nodes.push({text : text, ellipse : ellipse});
+    var nodeSet = DRAW.tmp.paper.set();
+    nodeSet.push(text);
+    nodeSet.push(ellipse);
+    nodeSet.draggable();
+    DRAW.tmp.nodes.push(nodeSet);
   }
 }
 
