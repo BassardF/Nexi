@@ -31,12 +31,12 @@ header > div{
   margin-bottom : 8px;
 }
 
-#chat-box{
+#tool-bar{
   background-color : #f2f2f2;
   border-bottom: 1px solid #e3e3e3;
 }
 
-#chat-box img{
+#tool-bar img{
   height : 35px;
   width : 35px;
   vertical-align : middle;
@@ -44,7 +44,7 @@ header > div{
   margin-left : 10px;
 }
 
-#chat-box input{
+#tool-bar input{
   background-color : #f2f2f2;
   outline : none;
   border : none;

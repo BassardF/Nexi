@@ -1,0 +1,134 @@
+@font-face {
+  font-family: customFont;
+  src: url(../fonts/afta-sans/AftaSansThin-Regular.otf);
+}
+
+body{
+  background-image : url("../img/background2.png");
+}
+
+*{
+  color : #333333;
+  font-family: customFont !important;
+}
+
+header{
+  height : 70px;
+  vertical-align : middle;
+}
+
+header > div{
+  display : inline-block;
+}
+
+#logo{
+  height : 35px;
+  width : 110px;
+  margin-top : 15px;
+  margin-left : 10px;
+}
+
+#slogan{
+  vertical-align : middle;
+  color : white;
+  margin-bottom : 8px;
+}
+
+#create-box{
+  background-color : #f2f2f2;
+  border: 1px solid #e3e3e3;
+  position : absolute;
+  display : none;
+  z-index : 10;
+}
+
+#create-box-content-input{
+  background-color : #f2f2f2;
+  border : none;
+  outline : none;
+  width : 280px;
+}
+
+#create-box > div{
+  margin : 5px;
+}
+
+#create-box-options img{
+  height : 20px;
+  width : 20px;
+  margin-left : 5px;
+}
+
+#create-box-options img:first-child{
+  margin-left : 235px;
+}
+
+#create-box-options img:hover{
+  cursor : pointer;
+}
+
+#tool-bar, #chat-bar{
+  background-color : white;
+  margin-left : 10px;
+  margin-right : 10px;
+  padding : 5px;
+}
+
+#tool-bar img{
+  height : 30px;
+  width : 30px;
+  vertical-align : middle;
+}
+
+#tool-bar input{
+  vertical-align : middle;
+  border : none;
+  outline : none;
+  margin-left : 5px;
+}
+
+#canvas{
+  margin-top : 10px;
+  margin-left : 10px;
+  margin-right : 5px;
+  background-color: white;
+}
+
+.message{
+  margin-top : 10px;
+  margin-left : 5px;
+  margin-right : 10px;
+  background-color: white;
+  padding : 5px;
+}
+
+.message-header > div{
+  display : inline-block;
+  opacity : 0.5;
+}
+
+.message-date {
+  float : right;
+  margin-right : 10px;
+}
+
+
+#chat-tips *{
+  color : white !important;
+}
+
+.box{
+  -webkit-box-shadow: 0px 1px 3px 1px rgba(41,53,64,0.5);
+  -moz-box-shadow: 0px 1px 3px 1px rgba(41,53,64,0.5);
+  box-shadow: 0px 1px 3px 1px rgba(41,53,64,0.5);
+}
+
+#chat-tips{
+  margin-top : 20px;
+  margin-left : 10px;
+}
+
+#mail-up-icon{
+  height : 35px;
+  width : 35px;
+}

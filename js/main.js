@@ -14,7 +14,7 @@ TOOLS = {
 CHAT = {
 
   // Templates : {{name}}, {{date}} & {{content}}
-  msg_pattern : '<div class="message"><div class="message-header"><div class="message-name">#{{name}}</div><div class="message-date">{{date}}</div></div><div class="message-body">{{content}}</div></div>',
+  msg_pattern : '<div class="message box"><div class="message-header"><div class="message-name">#{{name}}</div><div class="message-date">{{date}}</div></div><div class="message-body">{{content}}</div></div>',
 
   launch_triggers : function(){
     $("#send-button").click(function(){
@@ -139,7 +139,7 @@ var DRAW = {
 
   init : function(){
     DRAW.tmp.canvasWidth = $("#canvas").width();
-    DRAW.tmp.canvasHeight = $(window).height() - $("header").height() - $("#chat-box").height() - 5;
+    DRAW.tmp.canvasHeight = $(window).height() - $("header").height() - $("#tool-bar").height() - 35;
     DRAW.tmp.paper = Raphael("canvas", DRAW.tmp.canvasWidth, DRAW.tmp.canvasHeight);
 
     DRAW.tmp.initTips = DRAW.tmp.paper.image("img/add.svg", DRAW.tmp.canvasWidth / 2 - 40, DRAW.tmp.canvasHeight / 2 - 40, 80, 80).mouseover(function(){
