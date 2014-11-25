@@ -1,4 +1,4 @@
-// Tools
+/* Tools */
 
 TOOLS = {
 
@@ -9,10 +9,11 @@ TOOLS = {
 
 }
 
-// Chat
+/* Chat */
 
 CHAT = {
 
+  // Templates : {{name}}, {{date}} & {{content}}
   msg_pattern : '<div class="message"><div class="message-header"><div class="message-name">#{{name}}</div><div class="message-date">{{date}}</div></div><div class="message-body">{{content}}</div></div>',
 
   launch_triggers : function(){
@@ -20,8 +21,10 @@ CHAT = {
       var name = $("#name-input").val(),
           content = $("#content-input").val();
       if(name === ""){
+        // TODO : improved solution
         alert("You must select a name before chatting.");
       } else if(content ===""){
+        // TODO : improved solution
         alert("You didn't write a message to send !");
       } else {
         $("#chat-tips").hide();
@@ -39,8 +42,9 @@ CHAT = {
   }
 }
 
-// RaphaelJS
+/* RaphaelJS */
 
+// Connect two objects, line = color
 Raphael.fn.connection = function (obj1, obj2, line, bg) {
   if (obj1.line && obj1.from && obj1.to) {
     line = obj1;
@@ -98,6 +102,7 @@ Raphael.fn.connection = function (obj1, obj2, line, bg) {
   }
 };
 
+// Set a Set Draggable
 Raphael.st.draggable = function() {
   var me = this,
   lx = 0,
@@ -126,7 +131,9 @@ Raphael.st.draggable = function() {
 
 var DRAW = {
   tmp : {
+    // every creates set : [0] = text, [1] = ellipse
     nodes : [],
+    // links between elements lists
     connections : []
   },
 
@@ -234,7 +241,6 @@ var DRAW = {
     }
     console.log(shape1.type + " " + shape2.type + " ok");
     DRAW.tmp.connections.push(DRAW.tmp.paper.connection(shape1, shape2, "#e3e3e3"));
-
   }
 }
 
