@@ -192,7 +192,7 @@ var DRAW = {
 
   bubble : function(x, y, content){
     // Text
-    var text = DRAW.tmp.paper.text(x, y, content).attr({"font-size" : 13, "fill" : "#333333",  cursor: "move"}),
+    var text = DRAW.tmp.paper.text(x, y, content).attr({"font-size" : 13, "fill" : "#222222", cursor: "move"}),
         box = text.getBBox();
 
     // Bubble
@@ -201,7 +201,7 @@ var DRAW = {
                   yrad : box.width + 5,
                   xrad : box.height + 5};
 
-    var ellipse = DRAW.tmp.paper.ellipse(metrics.xcenter, metrics.ycenter, metrics.yrad, metrics.xrad).attr({"stroke" : "#e3e3e3", "fill" : "#f2f2f2", cursor: "move"}).toBack();
+    var ellipse = DRAW.tmp.paper.ellipse(metrics.xcenter, metrics.ycenter, metrics.yrad, metrics.xrad).attr({"stroke" : "#222222", "stroke-width" : "1", "fill" : "white", cursor: "move"}).toBack();
 
     var nodeSet = DRAW.tmp.paper.set();
     nodeSet.push(text);
@@ -240,7 +240,7 @@ var DRAW = {
       }
     }
     console.log(shape1.type + " " + shape2.type + " ok");
-    DRAW.tmp.connections.push(DRAW.tmp.paper.connection(shape1, shape2, "#e3e3e3"));
+    DRAW.tmp.connections.push(DRAW.tmp.paper.connection(shape1, shape2, "#222222"));
   }
 }
 

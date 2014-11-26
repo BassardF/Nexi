@@ -4,21 +4,11 @@
 }
 
 body{
-  background-image : url("../img/background2.png");
 }
 
 *{
-  color : #333333;
+  color : #222222;
   font-family: customFont !important;
-}
-
-header{
-  height : 70px;
-  vertical-align : middle;
-}
-
-header > div{
-  display : inline-block;
 }
 
 #logo{
@@ -30,20 +20,18 @@ header > div{
 
 #slogan{
   vertical-align : middle;
-  color : white;
   margin-bottom : 8px;
+  color : #85379D !important;
 }
 
 #create-box{
-  background-color : #f2f2f2;
-  border: 1px solid #e3e3e3;
+  border: 1px solid rgba(220,220,220,1);
   position : absolute;
   display : none;
   z-index : 10;
 }
 
 #create-box-content-input{
-  background-color : #f2f2f2;
   border : none;
   outline : none;
   width : 280px;
@@ -67,11 +55,12 @@ header > div{
   cursor : pointer;
 }
 
-#tool-bar, #chat-bar{
+#tool-bar{
   background-color : white;
-  margin-left : 10px;
-  margin-right : 10px;
-  padding : 5px;
+  margin-left : 20px;
+  margin-right : 20px;
+  padding : 10px;
+  border-bottom : 1px solid rgba(220,220,220,1);
 }
 
 #tool-bar img{
@@ -100,6 +89,7 @@ header > div{
   margin-right : 10px;
   background-color: white;
   padding : 5px;
+  border-left : 2px solid #84379E;
 }
 
 .message-header > div{
@@ -112,16 +102,6 @@ header > div{
   margin-right : 10px;
 }
 
-
-#chat-tips *{
-  color : white !important;
-}
-
-.box{
-  -webkit-box-shadow: 0px 1px 3px 1px rgba(41,53,64,0.5);
-  -moz-box-shadow: 0px 1px 3px 1px rgba(41,53,64,0.5);
-  box-shadow: 0px 1px 3px 1px rgba(41,53,64,0.5);
-}
 
 #chat-tips{
   margin-top : 20px;
