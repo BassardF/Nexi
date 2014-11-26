@@ -243,6 +243,10 @@ var DRAW = {
   },
 
   createBox : function(x, y, content){
+    if($("#modify-box").css("display") !== "none"){
+      $("#modify-box").css("display" , "none");
+      $("#modify-box-content-input").val("");
+    }
     $("#create-box").css("display", "block")
                     .css("left", x - 312 / 2)
                     .css("top", y - 64 / 2);
@@ -250,6 +254,10 @@ var DRAW = {
   },
 
   modifyBox : function(x, y, content){
+    if($("#create-box").css("display") !== "none"){
+      $("#create-box").css("display" , "none");
+      $("#create-box-content-input").val("");
+    }
     $("#modify-box").css("display", "block")
                     .css("left", x - 312 / 2)
                     .css("top", y - 64 / 2);
