@@ -91,6 +91,10 @@ Raphael.fn.connection = function (obj1, obj2, line, bg) {
     line = obj1;
     obj1 = line.from;
     obj2 = line.to;
+    if(obj1.id === null || obj2.id === null){
+      line.line.remove();
+      return;
+    }
   }
   var bb1 = obj1.getBBox(),
   bb2 = obj2.getBBox(),
@@ -180,7 +184,7 @@ var DRAW = {
 
   init : function(){
     DRAW.tmp.canvasWidth = $("#canvas").width();
-    DRAW.tmp.canvasHeight = $(window).height() - $("header").height() - $("#tool-bar").height() - 35;
+    DRAW.tmp.canvasHeight = $(window).height() - $("#tool-bar").height() - 35;
     DRAW.tmp.paper = Raphael("canvas", DRAW.tmp.canvasWidth, DRAW.tmp.canvasHeight);
 
     DRAW.tmp.initTips = DRAW.tmp.paper.image("img/add.svg", DRAW.tmp.canvasWidth / 2 - 40, DRAW.tmp.canvasHeight / 2 - 40, 80, 80).mouseover(function(){
@@ -213,7 +217,7 @@ var DRAW = {
 
   launch_triggers : function(){
     $("#create-box-check").click(function(){
-      DRAW.bubble(DRAW.tmp.lastClickPos.x, DRAW.tmp.lastClickPos.y - $("header").height() - $("#chat-box").height() - 5, $("#create-box-content-input").val());
+      DRAW.bubble(DRAW.tmp.lastClickPos.x, DRAW.tmp.lastClickPos.y - $("#tool-bar").height() - 20, $("#create-box-content-input").val());
       $("#create-box").css("display", "none");
       $("#create-box-content-input").val('');
     });
@@ -279,7 +283,7 @@ var DRAW = {
       DRAW.addConnection(this, target);
     });
 
-    ellipse.click(function(e){
+    ellipse.dblclick(function(e){
       for (var i = DRAW.tmp.nodes.length; i--;){
         if(DRAW.tmp.nodes[i].items[1].id === this.id){
           var text = DRAW.tmp.nodes[i].items[0];
@@ -290,7 +294,7 @@ var DRAW = {
       }
     });
 
-    text.click(function(e){
+    text.dblclick(function(e){
       DRAW.modifyBox(e.clientX, e.clientY, this.attr("text"));
       DRAW.tmp.currentModifElement = this;
       $("#modify-box-content-input").focus();
@@ -317,7 +321,6 @@ var DRAW = {
         return;
       }
     }
-    console.log(shape1.type + " " + shape2.type + " ok");
     DRAW.tmp.connections.push(DRAW.tmp.paper.connection(shape1, shape2, "#222222"));
   },
 
@@ -335,6 +338,20 @@ var DRAW = {
       }
 
     }
+    for (var i = DRAW.tmp.connections.length; i--;) {
+      DRAW.tmp.paper.connection(DRAW.tmp.connections[i]);
+    }
+    var toKeep = [];
+    for (var i = DRAW.tmp.connections.length; i--;) {
+      if(DRAW.tmp.connections[i].from.id !== null || DRAW.tmp.connections[i].to.id !== null){
+        toKeep.push(i);
+      }
+    }
+    var tmpTabToKeep = [];
+    for (var i = toKeep.length; i--;) {
+      tmpTabToKeep.push(DRAW.tmp.connections[toKeep[i]]);
+    }
+    DRAW.tmp.connections = tmpTabToKeep;
   }
 }
 
