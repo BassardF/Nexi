@@ -24,34 +24,35 @@ body{
   color : #85379D !important;
 }
 
-#create-box{
+#create-box, #modify-box{
   border: 1px solid rgba(220,220,220,1);
+  background-color: white;
   position : absolute;
   display : none;
   z-index : 10;
 }
 
-#create-box-content-input{
+#create-box-content-input, #modify-box-content-input{
   border : none;
   outline : none;
   width : 280px;
 }
 
-#create-box > div{
+#create-box > div, #modify-box > div{
   margin : 5px;
 }
 
-#create-box-options img{
+#create-box-options img, #modify-box-options img{
   height : 20px;
   width : 20px;
   margin-left : 5px;
 }
 
-#create-box-options img:first-child{
+#create-box-options img:first-child, #modify-box-options img:first-child{
   margin-left : 235px;
 }
 
-#create-box-options img:hover{
+#create-box-options img:hover, #modify-box-options img:hover{
   cursor : pointer;
 }
 

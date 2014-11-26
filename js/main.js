@@ -181,6 +181,20 @@ var DRAW = {
       $("#create-box").css("display", "none");
       $("#create-box-content-input").val('');
     });
+
+    $("#modify-box-check").click(function(){
+      DRAW.tmp.currentModifElement.attr("text", $("#modify-box-content-input").val());
+      $("#modify-box").css("display", "none");
+      $("#modify-box-content-input").val('');
+      DRAW.redrawEllipses();
+    });
+
+    $("#modify-box-delete").click(function(){
+      DRAW.tmp.currentModifElement.remove();
+      $("#modify-box").css("display", "none");
+      $("#modify-box-content-input").val('');
+      DRAW.redrawEllipses();
+    });
   },
 
   createBox : function(x, y, content){
@@ -188,6 +202,13 @@ var DRAW = {
                     .css("left", x - 312 / 2)
                     .css("top", y - 64 / 2);
     $("#create-box-content-input").focus();
+  },
+
+  modifyBox : function(x, y, content){
+    $("#modify-box").css("display", "block")
+                    .css("left", x - 312 / 2)
+                    .css("top", y - 64 / 2);
+    $("#modify-box-content-input").val(content);
   },
 
   bubble : function(x, y, content){
@@ -198,8 +219,8 @@ var DRAW = {
     // Bubble
     var metrics = {xcenter : box.x / 2 + box.x2 / 2,
                   ycenter : box.y / 2 + box.y2 / 2,
-                  yrad : box.width + 5,
-                  xrad : box.height + 5};
+                  yrad : box.width / 2 + 15,
+                  xrad : box.height / 2 + 15};
 
     var ellipse = DRAW.tmp.paper.ellipse(metrics.xcenter, metrics.ycenter, metrics.yrad, metrics.xrad).attr({"stroke" : "#222222", "stroke-width" : "1", "fill" : "white", cursor: "move"}).toBack();
 
@@ -217,6 +238,21 @@ var DRAW = {
       DRAW.addConnection(this, target);
     });
 
+    ellipse.click(function(e){
+      for (var i = DRAW.tmp.nodes.length; i--;){
+        if(DRAW.tmp.nodes[i].items[1].id === this.id){
+          var text = DRAW.tmp.nodes[i].items[0];
+          DRAW.modifyBox(e.clientX, e.clientY, text.attr("text"));
+          DRAW.tmp.currentModifElement = text;
+        }
+      }
+    });
+
+    text.click(function(e){
+      DRAW.modifyBox(e.clientX, e.clientY, this.attr("text"));
+      DRAW.tmp.currentModifElement = this;
+    });
+
   },
 
   addConnection : function(shape1, shape2){
@@ -226,7 +262,6 @@ var DRAW = {
     if(shape1.type == "text"){
       for (var i = DRAW.tmp.nodes.length; i--;){
         if(DRAW.tmp.nodes[i].items[0].id === shape1.id){
-          console.log("swap");
           shape1 = DRAW.tmp.nodes[i].items[1];
         }
         if(shape1.id === shape2.id){
@@ -241,6 +276,23 @@ var DRAW = {
     }
     console.log(shape1.type + " " + shape2.type + " ok");
     DRAW.tmp.connections.push(DRAW.tmp.paper.connection(shape1, shape2, "#222222"));
+  },
+
+  redrawEllipses : function(){
+    for (var i = DRAW.tmp.nodes.length; i--;){
+      //the text element has been deleted
+      if(DRAW.tmp.nodes[i][0].node == null){
+        DRAW.tmp.nodes[i][1].remove();
+      } else{
+        var textBox = DRAW.tmp.nodes[i][0].getBBox(),
+            ellipseBox = DRAW.tmp.nodes[i][1].getBBox();
+        //the text doesn't fit into the Ellipse
+        if(textBox.width > ellipseBox.width - 15){
+          DRAW.tmp.nodes[i][1].attr({"rx" : textBox.width / 2 + 15});
+        }
+      }
+
+    }
   }
 }
 
