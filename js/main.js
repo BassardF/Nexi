@@ -1,6 +1,6 @@
 /* Tools */
 
-TOOLS = {
+var TOOLS = {
 
   getDate : function(){
     var d = new Date();
@@ -9,12 +9,39 @@ TOOLS = {
 
 }
 
+/* Misc */
+
+var MISC = {
+  launch_triggers : function(){
+    $(document).keypress(function(e) {
+      if(e.keyCode == 13) {
+        // the focus is in the chatbox
+        if($("#content-input").is(":focus")){
+          $("#send-button").click();
+        }
+        // the create-box is displayed
+        if($("#create-box").css("display") !== "none"){
+          $("#create-box-check").click();
+        }
+        // the modify-box is displayed
+        if($("#modify-box").css("display") !== "none"){
+          $("#modify-box-check").click();
+        }
+      } else if(e.keyCode == 27){
+        alert('You pressed escape!');
+      }
+    });
+  }
+}
+
 /* Chat */
 
-CHAT = {
+var CHAT = {
 
   // Templates : {{name}}, {{date}} & {{content}}
   msg_pattern : '<div class="message box"><div class="message-header"><div class="message-name">#{{name}}</div><div class="message-date">{{date}}</div></div><div class="message-body">{{content}}</div></div>',
+
+  history : [],
 
   launch_triggers : function(){
     $("#send-button").click(function(){
@@ -28,17 +55,31 @@ CHAT = {
         alert("You didn't write a message to send !");
       } else {
         $("#chat-tips").hide();
-        CHAT.addMsg(name, TOOLS.getDate(), content);
+        CHAT.history.push({name : name, date : TOOLS.getDate(), content : content});
+        CHAT.displayMessages();
         $("#content-input").val("");
       }
     });
   },
 
-  addMsg : function(name, date, content){
+  addMsg : function(msg){
       $("#chat").append(CHAT.msg_pattern
-          .replace("{{name}}", name)
-          .replace("{{date}}", date)
-          .replace("{{content}}", content));
+          .replace("{{name}}", msg.name)
+          .replace("{{date}}", msg.date)
+          .replace("{{content}}", msg.content));
+  },
+
+  displayMessages : function(){
+    $(".message").remove();
+    var height = $("#chat").height();
+    for (var i = 0 ; i < CHAT.history.length; i++){
+      CHAT.addMsg(CHAT.history[i]);
+    }
+    for (var i = 0 ; i < CHAT.history.length; i++){
+      if($("#chat").height() > height){
+        $(".message")[i].remove();
+      }
+    }
   }
 }
 
@@ -244,6 +285,7 @@ var DRAW = {
           var text = DRAW.tmp.nodes[i].items[0];
           DRAW.modifyBox(e.clientX, e.clientY, text.attr("text"));
           DRAW.tmp.currentModifElement = text;
+          $("#modify-box-content-input").focus();
         }
       }
     });
@@ -251,6 +293,7 @@ var DRAW = {
     text.click(function(e){
       DRAW.modifyBox(e.clientX, e.clientY, this.attr("text"));
       DRAW.tmp.currentModifElement = this;
+      $("#modify-box-content-input").focus();
     });
 
   },
@@ -286,8 +329,7 @@ var DRAW = {
       } else{
         var textBox = DRAW.tmp.nodes[i][0].getBBox(),
             ellipseBox = DRAW.tmp.nodes[i][1].getBBox();
-        //the text doesn't fit into the Ellipse
-        if(textBox.width > ellipseBox.width - 15){
+        if(textBox.width !== ellipseBox.width - 15){
           DRAW.tmp.nodes[i][1].attr({"rx" : textBox.width / 2 + 15});
         }
       }
@@ -298,6 +340,7 @@ var DRAW = {
 
 // main
 
+MISC.launch_triggers();
 CHAT.launch_triggers();
 DRAW.init();
 DRAW.launch_triggers();
