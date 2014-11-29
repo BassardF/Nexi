@@ -1,0 +1,9 @@
+@font-face {
+  font-family: customFont;
+  src: url(../fonts/afta-sans/AftaSansThin-Regular.otf);
+}
+
+*{
+  color : #222222;
+  font-family: customFont !important;
+}
